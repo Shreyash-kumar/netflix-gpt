@@ -4,8 +4,11 @@
  - npm i -D react-router-dom
  - Setup routes using react-router-dom
  - Header
+ - Routing of App
  - Login Form
  - Sign up form
+ - Form Validation
+ - useRef Hook
  
 
 
