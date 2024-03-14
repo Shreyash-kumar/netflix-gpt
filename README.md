@@ -9,6 +9,8 @@
  - Sign up form
  - Form Validation
  - useRef Hook
+ - Firebase Setup
+ - Deploying app to production
  
 
 
@@ -21,3 +23,10 @@
  - git add .
  - git commit -m "first commit"
  - git push -u origin master
+
+
+# Steps for Deployment
+ - Install firebase CLI - 'npm install -g firebase-tools'
+ - Firebase Login - 'firebase login'
+ - Initilize Firebase - 'firebase init', then select Hosting
+ - Deploy command - 'firebase deploy' 

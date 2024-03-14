@@ -1,13 +1,25 @@
 import React, { useRef, useState } from "react";
 import Header from "./Header";
 import { checkValidForm } from "../utils/validate";
+import {
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+  updateProfile,
+} from "firebase/auth";
+import { auth } from "../utils/firebase";
+import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { addUser } from "../utils/userSlice";
 
 const Login = () => {
   const [isSignInForm, setIsSignInForm] = useState(true);
   const [errorMessage, setErrorMessage] = useState(null);
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const email = useRef(null);
   const password = useRef(null);
+  const name = useRef(null);
 
   const toggleForm = () => {
     setIsSignInForm(!isSignInForm);
@@ -16,7 +28,71 @@ const Login = () => {
   const handleButtonClick = () => {
     const message = checkValidForm(email.current.value, password.current.value);
     setErrorMessage(message);
-  }
+    if (message) return;
+
+    if (!isSignInForm) {
+      // Sign up logic
+      createUserWithEmailAndPassword(
+        auth,
+        email.current.value,
+        password.current.value
+      )
+        .then((userCredential) => {
+          // Signed up
+          const user = userCredential.user;
+          updateProfile(user, {
+            displayName: name.current.value,
+            photoURL: "https://cdn-icons-png.flaticon.com/512/3135/3135715.png",
+          })
+            .then(() => {
+              // Profile updated!
+              const { uid, email, displayName, photoURL } = auth.currentUser;
+              dispatch(
+                addUser({
+                  uid: uid,
+                  email: email,
+                  displayName: displayName,
+                  photoURL: photoURL,
+                })
+              );
+              navigate("/browse");
+            })
+            .catch((error) => {
+              // An error occurred
+              // ...
+              const errorCode = error.code;
+              const errorMessage = error.message;
+              setErrorMessage(errorCode + "-" + errorMessage);
+            });
+          console.log(user);
+        })
+        .catch((error) => {
+          const errorCode = error.code;
+          const errorMessage = error.message;
+          setErrorMessage(errorCode + "-" + errorMessage);
+          // ..
+        });
+    } else {
+      // Sign in logic
+      signInWithEmailAndPassword(
+        auth,
+        email.current.value,
+        password.current.value
+      )
+        .then((userCredential) => {
+          // Signed in
+          const user = userCredential.user;
+          console.log(user);
+          navigate("/browse");
+          // ...
+        })
+        .catch((error) => {
+          const errorCode = error.code;
+          const errorMessage = error.message;
+          setErrorMessage(errorCode + "-" + errorMessage);
+        });
+    }
+  };
 
   return (
     <div>
@@ -37,6 +113,7 @@ const Login = () => {
         </h1>
         {!isSignInForm && (
           <input
+            ref={name}
             className="p-3 my-4 w-full rounded-sm bg-gray-800"
             type="text"
             placeholder="Full Name"
@@ -55,7 +132,10 @@ const Login = () => {
           placeholder="Password"
         />
         <p className="text-sm text-red-600">{errorMessage}</p>
-        <button className="p-2 my-6 rounded-sm bg-red-600 w-full" onClick={handleButtonClick}>
+        <button
+          className="p-2 my-6 rounded-sm bg-red-600 w-full"
+          onClick={handleButtonClick}
+        >
           {isSignInForm ? "Sign In" : "Sign Up"}
         </button>
         <p className="py-4 cursor-pointer" onClick={toggleForm}>
