@@ -2,6 +2,9 @@ import Body from './components/Body';
 import { Provider } from 'react-redux';
 import appStore from './utils/appStore';
 
+
+//navigate should be present inside the Router Provider
+
 function App() {
   return (
     <Provider store={appStore}><Body /></Provider>
