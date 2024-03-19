@@ -12,7 +12,7 @@ const VideoBackground = (props) => {
     <div className="w-[100%] ">
       <iframe
         className="w-[100%] aspect-video"
-        src={"https://www.youtube.com/embed/"+trailerVideo?.key+"?autoplay=1&mute=1&vq=1080p"}
+        src={"https://www.youtube.com/embed/"+trailerVideo?.key+"?autoplay=1&mute=1&loop=1"}
         title="Toji Humbles The Strongest Jujutsu Sorcerer By Assassinating Him | 4K 60FPS | Jujutsu Kaisen"
         allow="autoplay"
       ></iframe>

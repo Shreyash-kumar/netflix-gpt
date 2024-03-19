@@ -16,3 +16,5 @@ export const API_OPTIONS = {
 export const PLAY_ICON = "https://cdn.iconscout.com/icon/free/png-256/free-play-1779827-1513991.png";
 
 export const MORE_INFO_ICON = "https://static.thenounproject.com/png/1446403-200.png";
+
+export const IMG_CDN_URL = "https://image.tmdb.org/t/p/w500";
