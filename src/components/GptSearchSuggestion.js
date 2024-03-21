@@ -1,11 +1,19 @@
 import React from 'react'
+import { useSelector } from 'react-redux';
+import MovieList from './MovieList';
 
 const GptSearchSuggestion = () => {
-  return (
-    <div>
+    const movies = useSelector((store) => store.movies.geminiFetchedMovies);
 
-    </div>
-  )
+    if(!movies) return null;
+
+    console.log('ewjbkk');
+
+    return  (
+      <div className="relative z-4 flex justify-center">
+        {movies && <MovieList title={"Search Results"} movies={movies}/>}
+      </div>
+    )
 }
 
-export default GptSearchSuggestion
+export default GptSearchSuggestion;
